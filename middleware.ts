@@ -6,54 +6,26 @@ export const config = {
   matcher: ["/api/openai", "/api/chat-stream"],
 };
 
-const serverConfig = getServerSideConfig();
+// const serverConfig = getServerSideConfig();
 
 export function middleware(req: NextRequest) {
-  const accessCode = req.headers.get("access-code");
-  const token = req.headers.get("token");
-  const hashedCode = md5.hash(accessCode ?? "").trim();
-
-  console.log("[Auth] allowed hashed codes: ", [...serverConfig.codes]);
-  console.log("[Auth] got access code:", accessCode);
-  console.log("[Auth] hashed access code:", hashedCode);
-
-  if (serverConfig.needCode && !serverConfig.codes.has(hashedCode) && !token) {
-    return NextResponse.json(
-      {
-        error: true,
-        needAccessCode: true,
-        msg: "Please go settings page and fill your access code.",
-      },
-      {
-        status: 401,
-      },
-    );
-  }
-
-  // inject api key
-  if (!token) {
-    const apiKey = serverConfig.apiKey;
-    if (apiKey) {
-      console.log("[Auth] set system token");
-      req.headers.set("token", apiKey);
-    } else {
-      return NextResponse.json(
-        {
-          error: true,
-          msg: "Empty Api Key",
-        },
-        {
-          status: 401,
-        },
-      );
-    }
-  } else {
-    console.log("[Auth] set user token");
-  }
-
+  console.log(req)
   return NextResponse.next({
     request: {
       headers: req.headers,
     },
   });
 }
+
+// curl 'http://9.134.237.219:20234/api/chat-stream' \
+  // -H 'Accept: */*' \
+  // -H 'Accept-Language: en-US,en;q=0.9' \
+  // -H 'Connection: keep-alive' \
+  // -H 'Content-Type: application/json' \
+  // -H 'Origin: http://9.134.237.219:20234' \
+  // -H 'Referer: http://9.134.237.219:20234/' \
+  // -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36' \
+  // -H 'access-code;' \
+  // --data-raw '{"messages":[{"role":"user","content":"123123"}],"stream":true,"model":"gpt-4","temperature":0.9,"presence_penalty":0.8}' \
+  // --compressed \
+  // --insecure

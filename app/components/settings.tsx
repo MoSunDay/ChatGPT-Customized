@@ -30,7 +30,7 @@ import { getEmojiUrl } from "../utils";
 import Link from "next/link";
 import { UPDATE_URL } from "../constant";
 import { SearchService, usePromptStore } from "../store/prompt";
-import { requestUsage } from "../requests";
+// import { requestUsage } from "../requests";
 import { ErrorBoundary } from "./error";
 import { InputRange } from "./input-range";
 
@@ -99,19 +99,19 @@ export function Settings(props: { closeSettings: () => void }) {
     });
   }
 
-  const [usage, setUsage] = useState<{
-    used?: number;
-    subscription?: number;
-  }>();
-  const [loadingUsage, setLoadingUsage] = useState(false);
-  function checkUsage() {
-    setLoadingUsage(true);
-    requestUsage()
-      .then((res) => setUsage(res))
-      .finally(() => {
-        setLoadingUsage(false);
-      });
-  }
+  // const [usage, setUsage] = useState<{
+  //   used?: number;
+  //   subscription?: number;
+  // }>();
+  // const [loadingUsage, setLoadingUsage] = useState(false);
+  // function checkUsage() {
+  //   setLoadingUsage(true);
+  //   requestUsage()
+  //     .then((res) => setUsage(res))
+  //     .finally(() => {
+  //       setLoadingUsage(false);
+  //     });
+  // }
 
   const accessStore = useAccessStore();
   const enabledAccessControl = useMemo(
@@ -127,7 +127,7 @@ export function Settings(props: { closeSettings: () => void }) {
   const showUsage = accessStore.isAuthorized();
   useEffect(() => {
     checkUpdate();
-    showUsage && checkUsage();
+    // showUsage && checkUsage();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -347,7 +347,7 @@ export function Settings(props: { closeSettings: () => void }) {
         </List>
 
         <List>
-          {enabledAccessControl ? (
+          {/* {enabledAccessControl ? (
             <SettingItem
               title={Locale.Settings.AccessCode.Title}
               subTitle={Locale.Settings.AccessCode.SubTitle}
@@ -377,9 +377,9 @@ export function Settings(props: { closeSettings: () => void }) {
                 accessStore.updateToken(e.currentTarget.value);
               }}
             />
-          </SettingItem>
+          </SettingItem> */}
 
-          <SettingItem
+          {/* <SettingItem
             title={Locale.Settings.Usage.Title}
             subTitle={
               showUsage
@@ -401,7 +401,7 @@ export function Settings(props: { closeSettings: () => void }) {
                 onClick={checkUsage}
               />
             )}
-          </SettingItem>
+          </SettingItem> */}
 
           <SettingItem
             title={Locale.Settings.HistoryCount.Title}
