@@ -437,10 +437,11 @@ export function Chat(props: {
     setHitBottom(isTouchBottom);
   };
 
+  const BASE_API = process.env.BASE_API;
   const { loading: usageLoading, run: modifyIac } = useRequest(
     () => {
       return {
-        url: `${PROTOCOL}://${BASE_API}/user/usage`,
+        url: `${BASE_API}/user/usage`,
         method: "GET",
       };
     },

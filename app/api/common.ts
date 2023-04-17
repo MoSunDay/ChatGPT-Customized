@@ -4,7 +4,6 @@ const OPENAI_URL = "127.0.0.1:8080/api/v1/gpt";
 const DEFAULT_PROTOCOL = "http";
 export const PROTOCOL = process.env.PROTOCOL ?? DEFAULT_PROTOCOL;
 export const BASE_URL = process.env.BASE_URL ?? OPENAI_URL;
-export const BASE_API = process.env.BASE_API ?? OPENAI_URL;
 
 export async function requestOpenai(req: NextRequest) {
   const apiKey = req.headers.get("token");
