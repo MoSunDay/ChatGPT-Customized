@@ -9,7 +9,6 @@ export const config = {
 // const serverConfig = getServerSideConfig();
 
 export function middleware(req: NextRequest) {
-  console.log(req)
   return NextResponse.next({
     request: {
       headers: req.headers,

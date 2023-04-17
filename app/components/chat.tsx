@@ -1,5 +1,6 @@
 import { useDebounce, useDebouncedCallback } from "use-debounce";
 import { memo, useState, useRef, useEffect, useLayoutEffect } from "react";
+import { useRequest } from "ahooks";
 
 import SendWhiteIcon from "../icons/send-white.svg";
 import BrainIcon from "../icons/brain.svg";
@@ -19,6 +20,7 @@ import LightIcon from "../icons/light.svg";
 import DarkIcon from "../icons/dark.svg";
 import AutoIcon from "../icons/auto.svg";
 import BottomIcon from "../icons/bottom.svg";
+import { BASE_URL, PROTOCOL } from "../api/common";
 
 import {
   Message,
@@ -400,6 +402,11 @@ export function ChatActions(props: {
   );
 }
 
+interface UsageType {
+  request_usage: string;
+  token_usage: string;
+}
+
 export function Chat(props: {
   showSideBar?: () => void;
   sideBarShowing?: boolean;
@@ -419,12 +426,31 @@ export function Chat(props: {
   const [isLoading, setIsLoading] = useState(false);
   const { submitKey, shouldSubmit } = useSubmitHandler();
   const { scrollRef, setAutoScroll, scrollToBottom } = useScrollToBottom();
+  const [usage, setUsage] = useState<UsageType>({
+    request_usage: "0",
+    token_usage: "0",
+  });
   const [hitBottom, setHitBottom] = useState(false);
 
   const onChatBodyScroll = (e: HTMLElement) => {
     const isTouchBottom = e.scrollTop + e.clientHeight >= e.scrollHeight - 20;
     setHitBottom(isTouchBottom);
   };
+
+  const { run: modifyIac, loading: usageLoading } = useRequest(
+    () => {
+      return {
+        url: `${PROTOCOL}://${BASE_URL}/user/usage`,
+        method: "GET",
+      };
+    },
+    {
+      manual: true,
+      onSuccess: (val) => {
+        setUsage(val);
+      },
+    },
+  );
 
   // prompt hints
   const promptStore = usePromptStore();
@@ -562,7 +588,7 @@ export function Chat(props: {
   const messages = context
     .concat(session.messages as RenderMessage[])
     .concat(
-      isLoading
+      isLoading || usageLoading
         ? [
             {
               ...createMessage({
@@ -604,6 +630,10 @@ export function Chat(props: {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    modifyIac();
+  }, [session.messages.length]);
+
   return (
     <div className={styles.chat} key={session.id}>
       <div className={styles["window-header"]}>
@@ -615,7 +645,11 @@ export function Chat(props: {
             {session.topic}
           </div>
           <div className={styles["window-header-sub-title"]}>
-            {Locale.Chat.SubTitle(session.messages.length)}
+            {Locale.Chat.SubTitle(
+              session.messages.length,
+              usage.request_usage ? usage.request_usage : "0",
+              usage.token_usage ? usage.token_usage : "0",
+            )}
           </div>
         </div>
         <div className={styles["window-actions"]}>

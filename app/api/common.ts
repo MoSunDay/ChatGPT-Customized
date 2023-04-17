@@ -2,8 +2,8 @@ import { NextRequest } from "next/server";
 
 const OPENAI_URL = "127.0.0.1:8080/api/v1/gpt";
 const DEFAULT_PROTOCOL = "http";
-const PROTOCOL = process.env.PROTOCOL ?? DEFAULT_PROTOCOL;
-const BASE_URL = process.env.BASE_URL ?? OPENAI_URL;
+export const PROTOCOL = process.env.PROTOCOL ?? DEFAULT_PROTOCOL;
+export const BASE_URL = process.env.BASE_URL ?? OPENAI_URL;
 
 export async function requestOpenai(req: NextRequest) {
   const apiKey = req.headers.get("token");
@@ -19,11 +19,12 @@ export async function requestOpenai(req: NextRequest) {
   console.log("[Proxy] ", openaiPath);
   console.log("[Base Url]", baseUrl);
 
+  const requestHeaders = new Headers(req.headers);
+  requestHeaders.set("Content-Type", "application/json");
+  requestHeaders.set("Authorization", `Bearer ${apiKey}`);
+
   return fetch(`${baseUrl}/${openaiPath}`, {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${apiKey}`,
-    },
+    headers: requestHeaders,
     method: req.method,
     body: req.body,
   });
