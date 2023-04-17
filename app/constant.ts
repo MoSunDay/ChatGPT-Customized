@@ -1,6 +1,6 @@
 export const OWNER = "Amoshe(forked from Yidadaa/ChatGPT-Next-Web)";
 export const GITHUBID = "MoSunDay";
-export const REPO = "ChatGPT-Customized (forked from Yidadaa/ChatGPT-Next-Web)";
+export const REPO = "ChatGPT-Customized";
 export const REPO_URL = `https://github.com/${GITHUBID}/${REPO}`;
 export const ISSUE_URL = `https://github.com/${GITHUBID}/${REPO}/issues`;
 export const UPDATE_URL = `${REPO_URL}#keep-updated`;
