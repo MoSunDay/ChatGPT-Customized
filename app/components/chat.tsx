@@ -20,7 +20,7 @@ import LightIcon from "../icons/light.svg";
 import DarkIcon from "../icons/dark.svg";
 import AutoIcon from "../icons/auto.svg";
 import BottomIcon from "../icons/bottom.svg";
-import { BASE_URL, PROTOCOL } from "../api/common";
+import { BASE_API, PROTOCOL } from "../api/common";
 
 import {
   Message,
@@ -440,7 +440,7 @@ export function Chat(props: {
   const { loading: usageLoading, run: modifyIac } = useRequest(
     () => {
       return {
-        url: `${PROTOCOL}://${BASE_URL}/user/usage`,
+        url: `${PROTOCOL}://${BASE_API}/user/usage`,
         method: "GET",
       };
     },
