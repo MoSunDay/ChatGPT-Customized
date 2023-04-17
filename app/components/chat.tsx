@@ -437,7 +437,7 @@ export function Chat(props: {
     setHitBottom(isTouchBottom);
   };
 
-  const { run: modifyIac, loading: usageLoading } = useRequest(
+  const { loading: usageLoading, run: modifyIac } = useRequest(
     () => {
       return {
         url: `${PROTOCOL}://${BASE_URL}/user/usage`,
