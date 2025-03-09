@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
 
-const OPENAI_URL = "127.0.0.1:8080/api/v1/gpt";
+const OPENAI_URL = "127.0.0.1:8090/api/v1/gpt";
 const DEFAULT_PROTOCOL = "http";
 export const PROTOCOL = process.env.PROTOCOL ?? DEFAULT_PROTOCOL;
 export const BASE_URL = process.env.BASE_URL ?? OPENAI_URL;

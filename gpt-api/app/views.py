@@ -74,8 +74,6 @@ async def chat_completions(request):
 新提问: {req_data["messages"][-1]["content"]}
 '''
     print(model)
-    # 流式响应模式
-    model = "deepseek-r1:1.5b"
     async def streaming_fn(response):
         async for chunk in generate_stream(model, prompt):
             await response.write(chunk)
