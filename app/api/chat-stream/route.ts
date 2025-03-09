@@ -7,7 +7,6 @@ async function createStream(req: NextRequest) {
   const decoder = new TextDecoder();
 
   const res = await requestOpenai(req);
-
   const contentType = res.headers.get("Content-Type") ?? "";
   if (!contentType.includes("stream")) {
     const content = await (
@@ -16,7 +15,6 @@ async function createStream(req: NextRequest) {
     console.log("[Stream] error ", content);
     return "```json\n" + `${content}` + "```";
   }
-
   const stream = new ReadableStream({
     async start(controller) {
       function onParse(event: any) {

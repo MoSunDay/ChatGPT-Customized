@@ -1,0 +1,4 @@
+sanic==21.9.3
+uvicorn==0.17.6
+httpx==0.22.0
+websockets==10.0.0

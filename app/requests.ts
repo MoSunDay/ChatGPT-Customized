@@ -68,6 +68,7 @@ export async function requestChat(messages: Message[]) {
 
   try {
     const response = (await res.json()) as ChatResponse;
+    console.error(response);
     return response;
   } catch (error) {
     console.error("[Request Chat] ", error, res.body);

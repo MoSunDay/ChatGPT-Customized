@@ -25,6 +25,8 @@ import dynamic from "next/dynamic";
 import { REPO_URL } from "../constant";
 import { ErrorBoundary } from "./error";
 
+import { ALL_MODELS, ModalConfigValidator } from "../store";
+
 export function Loading(props: { noLogo?: boolean }) {
   return (
     <div className={styles["loading-content"]}>
@@ -144,8 +146,10 @@ function _Home() {
 
   // setting
   const [openSettings, setOpenSettings] = useState(false);
-  const config = useChatStore((state) => state.config);
-
+  const [config, updateConfig] = useChatStore((state) => [
+    state.config,
+    state.updateConfig,
+  ]);
   // drag side bar
   const { onDragMouseDown } = useDragSideBar();
 
@@ -154,6 +158,15 @@ function _Home() {
   if (loading) {
     return <Loading />;
   }
+
+  // const [config, updateConfig, resetConfig, clearAllData, clearSessions] =
+  //   useChatStore((state) => [
+  //     state.config,
+  //     state.updateConfig,
+  //     state.resetConfig,
+  //     state.clearAllData,
+  //     state.clearSessions,
+  //   ]);
 
   return (
     <div
@@ -167,9 +180,29 @@ function _Home() {
         className={styles.sidebar + ` ${showSideBar && styles["sidebar-show"]}`}
       >
         <div className={styles["sidebar-header"]}>
-          <div className={styles["sidebar-title"]}>ChatGPT</div>
+          <div className={styles["sidebar-title"]}>Ollama Proxy</div>
           <div className={styles["sidebar-sub-title"]}>
-            Build your own AI assistant.
+            请选择需要使用的模型
+          </div>
+
+          <div style={{ paddingTop: 12 }}>
+            <select
+              value={config.modelConfig.model}
+              onChange={(e) => {
+                updateConfig(
+                  (config) =>
+                    (config.modelConfig.model = ModalConfigValidator.model(
+                      e.currentTarget.value,
+                    )),
+                );
+              }}
+            >
+              {ALL_MODELS.map((v) => (
+                <option value={v.name} key={v.name} disabled={!v.available}>
+                  {v.name}
+                </option>
+              ))}
+            </select>
           </div>
           <div className={styles["sidebar-logo"]}>
             <ChatGptIcon />

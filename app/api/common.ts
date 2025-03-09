@@ -22,7 +22,6 @@ export async function requestOpenai(req: NextRequest) {
   const requestHeaders = new Headers(req.headers);
   requestHeaders.set("Content-Type", "application/json");
   requestHeaders.set("Authorization", `Bearer ${apiKey}`);
-
   return fetch(`${baseUrl}/${openaiPath}`, {
     headers: requestHeaders,
     method: req.method,

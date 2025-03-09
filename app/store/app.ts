@@ -69,31 +69,33 @@ export type ModelConfig = ChatConfig["modelConfig"];
 
 export const ROLES: Message["role"][] = ["system", "user", "assistant"];
 
-const ENABLE_GPT4 = true;
-
 export const ALL_MODELS = [
-  // {
-  //   name: "gpt-4",
-  //   available: ENABLE_GPT4,
-  // },
-  // {
-  //   name: "gpt-4-0314",
-  //   available: ENABLE_GPT4,
-  // },
-  // {
-  //   name: "gpt-4-32k",
-  //   available: ENABLE_GPT4,
-  // },
-  // {
-  //   name: "gpt-4-32k-0314",
-  //   available: ENABLE_GPT4,
-  // },
   {
-    name: "gpt-3.5-turbo",
+    name: "deepseek-r1:14b",
     available: true,
   },
   {
-    name: "gpt-3.5-turbo-0301",
+    name: "qwq:32b",
+    available: true,
+  },
+  {
+    name: "qwen2.5:14b",
+    available: true,
+  },
+  {
+    name: "qwen2.5:32b",
+    available: true,
+  },
+  {
+    name: "qwen2.5-coder:32b",
+    available: true,
+  },
+  {
+    name: "qwen2.5-coder:14b",
+    available: true,
+  },
+  {
+    name: "deepseek-r1:32b",
     available: true,
   },
 ];
@@ -136,7 +138,7 @@ const DEFAULT_CONFIG: ChatConfig = {
   historyMessageCount: 4,
   compressMessageLengthThreshold: 1000,
   sendBotMessages: true as boolean,
-  submitKey: SubmitKey.CtrlEnter as SubmitKey,
+  submitKey: SubmitKey.Enter as SubmitKey,
   avatar: "1f603",
   fontSize: 14,
   theme: Theme.Auto as Theme,
@@ -147,7 +149,7 @@ const DEFAULT_CONFIG: ChatConfig = {
   disablePromptHint: false,
 
   modelConfig: {
-    model: "gpt-3.5-turbo",
+    model: "qwen2.5-coder:14b",
     temperature: 1,
     max_tokens: 2000,
     presence_penalty: 0,

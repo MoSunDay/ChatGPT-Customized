@@ -1,6 +1,5 @@
 import { useDebounce, useDebouncedCallback } from "use-debounce";
 import { memo, useState, useRef, useEffect, useLayoutEffect } from "react";
-import { useRequest } from "ahooks";
 
 import SendWhiteIcon from "../icons/send-white.svg";
 import BrainIcon from "../icons/brain.svg";
@@ -20,7 +19,6 @@ import LightIcon from "../icons/light.svg";
 import DarkIcon from "../icons/dark.svg";
 import AutoIcon from "../icons/auto.svg";
 import BottomIcon from "../icons/bottom.svg";
-import { BASE_API, PROTOCOL } from "../api/common";
 
 import {
   Message,
@@ -402,10 +400,10 @@ export function ChatActions(props: {
   );
 }
 
-interface UsageType {
-  request_usage: string;
-  token_usage: string;
-}
+// interface UsageType {
+//   request_usage: string;
+//   token_usage: string;
+// }
 
 export function Chat(props: {
   showSideBar?: () => void;
@@ -426,10 +424,10 @@ export function Chat(props: {
   const [isLoading, setIsLoading] = useState(false);
   const { submitKey, shouldSubmit } = useSubmitHandler();
   const { scrollRef, setAutoScroll, scrollToBottom } = useScrollToBottom();
-  const [usage, setUsage] = useState<UsageType>({
-    request_usage: "0",
-    token_usage: "0",
-  });
+  // const [usage, setUsage] = useState<UsageType>({
+  //   request_usage: "0",
+  //   token_usage: "0",
+  // });
   const [hitBottom, setHitBottom] = useState(false);
 
   const onChatBodyScroll = (e: HTMLElement) => {
@@ -438,20 +436,20 @@ export function Chat(props: {
   };
 
   const BASE_API = process.env.BASE_API;
-  const { loading: usageLoading, run: modifyIac } = useRequest(
-    () => {
-      return {
-        url: `${BASE_API}/user/usage`,
-        method: "GET",
-      };
-    },
-    {
-      manual: true,
-      onSuccess: (val) => {
-        setUsage(val);
-      },
-    },
-  );
+  // const { loading: usageLoading, run: modifyIac } = useRequest(
+  //   () => {
+  //     return {
+  //       url: `${BASE_API}/user/usage`,
+  //       method: "GET",
+  //     };
+  //   },
+  //   {
+  //     manual: true,
+  //     onSuccess: (val) => {
+  //       setUsage(val);
+  //     },
+  //   },
+  // );
 
   // prompt hints
   const promptStore = usePromptStore();
@@ -589,7 +587,7 @@ export function Chat(props: {
   const messages = context
     .concat(session.messages as RenderMessage[])
     .concat(
-      isLoading || usageLoading
+      isLoading
         ? [
             {
               ...createMessage({
@@ -632,7 +630,7 @@ export function Chat(props: {
   }, []);
 
   useEffect(() => {
-    modifyIac();
+    // modifyIac();
   }, [session.messages.length]);
 
   return (
@@ -645,13 +643,13 @@ export function Chat(props: {
           >
             {session.topic}
           </div>
-          <div className={styles["window-header-sub-title"]}>
+          {/* <div className={styles["window-header-sub-title"]}>
             {Locale.Chat.SubTitle(
               session.messages.length,
               usage.request_usage ? usage.request_usage : "0",
               usage.token_usage ? usage.token_usage : "0",
             )}
-          </div>
+          </div> */}
         </div>
         <div className={styles["window-actions"]}>
           <div className={styles["window-action-button"] + " " + styles.mobile}>
